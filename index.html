@@ -326,6 +326,108 @@
         pointer-events: none;
         z-index: -1;
       }
+
+      /* Desktop Layout (Default) */
+      #registrationForm {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+        grid-template-areas:
+          "name name"
+          "phone email"
+          "church church"
+          "roles roles";
+      }
+
+      .form-step {
+        display: block; /* Show all steps on desktop */
+      }
+
+      .form-step[data-step="1"] { grid-area: name; }
+      .form-step[data-step="2"] { grid-area: phone; }
+      .form-step[data-step="3"] { grid-area: email; }
+      .form-step[data-step="4"] { grid-area: church; }
+      .form-step[data-step="5"] { grid-area: roles; }
+
+      .mobile-next-btn, .mobile-role-options, .mobile-only {
+        display: none;
+      }
+
+      /* Mobile Layout */
+      @media (max-width: 500px) {
+        #registrationForm {
+          display: block; /* Stack everything */
+        }
+
+        .form-step {
+          display: none; /* Hide inactive steps */
+          animation: fadeIn 0.4s ease;
+        }
+
+        .form-step.active {
+          display: block; /* Show active step */
+        }
+
+        /* Hide desktop elements */
+        .checkbox-group, #submitBtn {
+          display: none !important;
+        }
+
+        .mobile-next-btn {
+          display: block;
+          width: 100%;
+          padding: 12px;
+          margin-top: 5px;
+          background: white;
+          color: #0f172a;
+          border: none;
+          border-radius: 8px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.1em;
+          cursor: pointer;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .mobile-role-options {
+          display: flex;
+          flex-direction: column;
+          gap: 15px;
+          margin-top: 15px;
+        }
+
+        .role-btn {
+          width: 100%;
+          padding: 16px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          border-radius: 8px;
+          color: white;
+          font-family: 'Playfair Display', serif;
+          font-size: 18px; /* Larger tap target */
+          cursor: pointer;
+          transition: all 0.2s ease;
+          text-align: center;
+        }
+
+        .role-btn:active {
+          background: white;
+          color: #000;
+          transform: scale(0.98);
+        }
+
+        .mobile-only {
+          display: block !important;
+          text-align: center;
+          margin-bottom: 20px;
+          font-size: 1.2rem;
+        }
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
     </style>
   </head>
 
@@ -347,19 +449,24 @@
         </div>
 
         <form id="registrationForm">
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                name="name"
-                placeholder="John of Zebedee"
-                required
-              />
+          <!-- Step 1: Name -->
+          <div class="form-step active" data-step="1">
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="John of Zebedee"
+                  required
+                />
+              </div>
             </div>
+            <button type="button" class="mobile-next-btn" onclick="handleNext(1)">Next</button>
           </div>
 
-          <div class="form-row">
+          <!-- Step 2: Phone -->
+          <div class="form-step" data-step="2">
             <div class="form-group">
               <label class="form-label">Phone Number</label>
               <div class="input-wrapper">
@@ -371,7 +478,11 @@
                 />
               </div>
             </div>
+            <button type="button" class="mobile-next-btn" onclick="handleNext(2)">Next</button>
+          </div>
 
+          <!-- Step 3: Email -->
+          <div class="form-step" data-step="3">
             <div class="form-group">
               <label class="form-label">Email Address</label>
               <div class="input-wrapper">
@@ -383,33 +494,51 @@
                 />
               </div>
             </div>
+            <button type="button" class="mobile-next-btn" onclick="handleNext(3)">Next</button>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Local Church (Optional)</label>
-            <div class="input-wrapper">
-              <input
-                type="text"
-                name="church"
-                placeholder="Ephesus Congregational Church"
-              />
+          <!-- Step 4: Church -->
+          <div class="form-step" data-step="4">
+            <div class="form-group">
+              <label class="form-label">Local Church (Optional)</label>
+              <div class="input-wrapper">
+                <input
+                  type="text"
+                  name="church"
+                  placeholder="Ephesus Congregational Church"
+                />
+              </div>
             </div>
+            <button type="button" class="mobile-next-btn" onclick="handleNext(4)">Next</button>
           </div>
 
-          <div class="checkbox-group">
-            <div class="checkbox-item">
-              <input type="checkbox" name="role" value="Pastor" id="pastor" class="role-selector">
-              <label for="pastor">Pastor</label>
-            </div>
-            <div class="checkbox-item">
-              <input type="checkbox" name="role" value="Deacon" id="deacon" class="role-selector">
-              <label for="deacon">Deacon</label>
-            </div>
-          </div>
+          <!-- Step 5: Role -->
+          <div class="form-step" data-step="5">
+            <label class="form-label mobile-only" style="display:none;">Your Role</label>
 
-          <button type="submit" class="submit-btn" id="submitBtn">
-            Confirm Registration
-          </button>
+            <!-- Mobile Role Options -->
+            <div class="mobile-role-options">
+               <button type="button" class="role-btn" onclick="selectRole('Pastor')">I am a Pastor</button>
+               <button type="button" class="role-btn" onclick="selectRole('Deacon')">I am a Deacon</button>
+               <button type="button" class="role-btn" onclick="selectRole('Neither')">Neither</button>
+            </div>
+
+            <!-- Desktop Checkboxes (Hidden on mobile) -->
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" name="role" value="Pastor" id="pastor" class="role-selector">
+                <label for="pastor">Pastor</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" name="role" value="Deacon" id="deacon" class="role-selector">
+                <label for="deacon">Deacon</label>
+              </div>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">
+              Confirm Registration
+            </button>
+          </div>
         </form>
 
 
@@ -622,7 +751,10 @@
           // --- 3. Map Drawing (Illinois) ---
           
           // Map scale: 1.07 for better fit (+2%)
-          scale = (canvas.height * 1.07) / svgHeight; 
+          // Mobile Check: ensure it fits width-wise too
+          const hScale = (canvas.height * 1.07) / svgHeight;
+          const wScale = (canvas.width * 0.9) / svgWidth;
+          scale = Math.min(hScale, wScale);
           
           // Absolute Center again
           const centerX = canvas.width * 0.5; 
@@ -1054,10 +1186,12 @@
           formContainer.classList.add("hidden");
           thankYou.classList.add("active");
 
-          // Page refresh after 10 seconds
-          setTimeout(() => {
-            window.location.reload();
-          }, 10000);
+          // Page refresh after 10 seconds (Desktop only)
+          if (window.innerWidth > 500) {
+            setTimeout(() => {
+              window.location.reload();
+            }, 10000);
+          }
 
           // Reset form state
           form.reset();
@@ -1070,6 +1204,53 @@
           submitBtn.innerHTML = originalBtnText;
         }
       });
+
+      // --- Mobile Wizard Logic ---
+      function showStep(step) {
+        // Hide all steps
+        document.querySelectorAll('.form-step').forEach(el => {
+          el.classList.remove('active');
+        });
+
+        // Show target step
+        const stepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+        if (stepEl) {
+          stepEl.classList.add('active');
+        }
+      }
+
+      window.handleNext = function(step) {
+        // Validate current step fields
+        const stepEl = document.querySelector(`.form-step[data-step="${step}"]`);
+        const inputs = stepEl.querySelectorAll('input');
+        let valid = true;
+
+        inputs.forEach(input => {
+          if (!input.checkValidity()) {
+            valid = false;
+            input.reportValidity();
+          }
+        });
+
+        if (valid) {
+          showStep(step + 1);
+        }
+      };
+
+      window.selectRole = function(role) {
+        // 1. Update the hidden/desktop checkbox
+        // Uncheck all first (to ensure mutual exclusivity)
+        document.querySelectorAll('.role-selector').forEach(cb => cb.checked = false);
+
+        if (role !== 'Neither') {
+          // Check the corresponding box
+          const cb = document.querySelector(`.role-selector[value="${role}"]`);
+          if (cb) cb.checked = true;
+        }
+
+        // 2. Submit form
+        document.getElementById('registrationForm').requestSubmit();
+      };
 
     </script>
   </body>
