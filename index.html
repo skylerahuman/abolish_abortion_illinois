@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>End Abortion Now | Equal Protection Rally Illinois</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+        background-color: #121418; /* Lighter, visible slate background */
+        color: white;
+        font-family: 'Playfair Display', serif;
+      }
+
+      .canvas-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .container {
+        position: relative;
+        z-index: 10;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-top: 15vh; /* Responsive vertical positioning */
+      }
+
+      .form-container {
+        background: transparent; 
+        padding: 0 1rem 3rem 1rem;
+        margin: 0 auto; 
+        width: 90%; /* Responsive width */
+        max-width: 360px; /* Maximum desktop size */
+        position: relative;
+        overflow: visible; 
+      }
+      
+      .privacy-footer {
+          position: fixed;
+          bottom: 2rem;
+          width: 100%;
+          text-align: center;
+          font-size: 0.7rem;
+          color: rgba(255, 255, 255, 0.4);
+          z-index: 20;
+          pointer-events: none; /* Let clicks pass through if needed */
+      }
+
+      .header {
+        display: flex; /* Robust centering */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 0; 
+        margin-bottom: clamp(30px, 8vh, 50px);
+      }
+
+      .title {
+        font-family: 'Cinzel', serif;
+        font-size: 40px; /* Increased to 40px */
+        font-weight: 700;
+        margin-top: 0; 
+        color: white;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.05em;
+        line-height: 1.1;
+        white-space: nowrap; 
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Added drop shadow */
+      }
+
+      .subtitle {
+        font-size: 24px; /* Increased to 24px */
+        letter-spacing: 1px;
+        text-transform: none;
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 400;
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        white-space: nowrap; 
+      }
+
+      .divider {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        margin: 32px auto; /* Increased from 24px */
+        width: 30%;
+      }
+
+      .form-group {
+        margin-bottom: 25px; /* Tightened from 40px */
+      }
+
+      .form-label {
+        display: block;
+        font-size: 14px; /* Increased to 14px */
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.5); /* Slightly brighter */
+        margin-bottom: 10px;
+        font-weight: 600;
+        text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8); /* Distinct shadow */
+      }
+
+      .input-wrapper {
+        position: relative;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px 18px; /* Restored for look/usability */
+        background: rgba(0, 0, 0, 0.5); 
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        color: white;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(12px);
+        text-align: center; 
+      }
+
+      input::placeholder {
+        color: rgba(255, 255, 255, 0.2);
+      }
+
+      input:focus {
+        outline: none;
+        border-color: rgba(255,255,255,0.4);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px; /* Tighter gap for narrower container */
+      }
+
+      @media (max-width: 480px) {
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .title { 
+          font-size: clamp(24px, 8vw, 32px); 
+          white-space: normal; /* Allow wrap on very small screens */
+        }
+        .subtitle { font-size: 16px; }
+        .form-container { 
+          padding: 0 0.5rem 2rem 0.5rem; 
+          max-width: 280px; /* Hug tighter on small mobile */
+        }
+        .container { padding-top: 10vh; }
+      }
+
+      .submit-btn {
+        width: auto;
+        min-width: 250px; /* Even slimmer profile */
+        margin: 30px auto 0 auto;
+        padding: 12px 24px; /* Slightly slimmer height */
+        background: white;
+        color: #0f172a;
+        border: none;
+        border-radius: 8px;
+        font-size: 13px; 
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); 
+      }
+
+      .submit-btn:hover {
+        background: #f1f5f9;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 32px;
+        font-size: 8px;
+        letter-spacing: 0.05em;
+        text-transform: none;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 400;
+      }
+
+      .checkbox-group {
+        display: flex;
+        gap: 30px;
+        margin-top: 10px;
+        margin-bottom: 30px;
+        justify-content: center;
+      }
+
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        user-select: none;
+      }
+
+      .checkbox-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        appearance: none;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.3s ease;
+        padding: 0;
+      }
+
+      .checkbox-item input[type="checkbox"]:checked {
+        background: #dc2626;
+        border-color: #dc2626;
+      }
+
+      .checkbox-item input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: block;
+      }
+
+      .checkbox-item label {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.7);
+        cursor: pointer;
+      }
+
+      .thank-you {
+        display: none;
+        text-align: center;
+        animation: fadeInScale 0.5s ease;
+      }
+
+      .thank-you.active {
+        display: block;
+      }
+
+      .thank-you-icon {
+        font-size: 72px;
+        margin-bottom: 24px;
+      }
+
+      .thank-you h2 {
+        font-size: 32px;
+        color: white;
+        margin-bottom: 16px;
+      }
+
+      .thank-you p {
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.6;
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .form-container {
+        transition: opacity 0.3s ease;
+      }
+      .form-container.hidden {
+        display: none;
+      }
+
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+      }
+
+      #blood-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Configuration -->
+    <script src="env.js"></script>
+    <script src="config.js"></script>
+
+
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="blood-canvas"></canvas>
+
+    <div class="container">
+      <div class="form-container" id="formContainer">
+        <div class="header">
+          <h1 class="title">End Abortion Now</h1>
+          <div class="divider"></div>
+          <p class="subtitle">Equal Protection Rally Illinois</p>
+        </div>
+
+        <form id="registrationForm">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                name="name"
+                placeholder="John of Zebedee"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Phone Number</label>
+              <div class="input-wrapper">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="(312) 555-0123"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <div class="input-wrapper">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="john@patmos.net"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Local Church (Optional)</label>
+            <div class="input-wrapper">
+              <input
+                type="text"
+                name="church"
+                placeholder="Ephesus Congregational Church"
+              />
+            </div>
+          </div>
+
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" name="role" value="Pastor" id="pastor" class="role-selector">
+              <label for="pastor">Pastor</label>
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" name="role" value="Deacon" id="deacon" class="role-selector">
+              <label for="deacon">Deacon</label>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Confirm Registration
+          </button>
+        </form>
+
+
+      </div>
+
+      <div class="thank-you" id="thankYou">
+        <div class="thank-you-icon"></div>
+        <h2>Thank You!</h2>
+        <p>
+          We've received your registration and look forward to seeing you at the
+          event. Your commitment to the abolitionist movement in Illinois is
+          deeply appreciated.
+        </p>
+      </div>
+    </div>
+
+    <div class="privacy-footer">
+      <p>
+        This registry is used solely for event coordination and internal communication. 
+        We value your privacy and do not share your information with third parties.
+      </p>
+    </div>
+
+    <script>
+      // Actual Illinois SVG path from Illinois.svg
+      const illinoisPath =
+        "M538.153,160.319L537.367,551.687C537.367,551.687 523.221,548.543 526.365,560.332C529.508,572.12 534.224,571.334 527.937,578.407C521.65,585.48 513.791,592.553 523.221,600.411C532.652,608.27 527.151,605.913 532.652,623.988C538.153,642.063 543.654,643.635 536.581,654.637C529.508,665.639 534.224,655.423 524.793,675.07C515.363,694.717 484.713,710.434 483.142,733.225C481.570,756.015 468.996,778.806 471.353,793.738C473.711,808.669 468.210,810.241 459.565,818.886C450.921,827.530 456.422,829.102 462.709,840.104C468.996,851.107 446.991,857.394 434.417,858.965C421.843,860.537 429.360,853.440 418.700,866.038C410.055,876.255 406.125,878.612 413.984,888.043C421.843,897.474 432.059,903.761 424.987,910.048C417.914,916.335 392.766,904.546 381.763,899.831C370.761,895.116 358.973,882.542 348.756,894.330C338.540,906.118 322.822,913.977 329.109,921.836C335.396,929.695 328.323,929.695 318.107,922.622C307.891,915.549 295.317,902.975 296.102,894.330C296.888,885.685 296.888,889.615 302.389,873.111C307.891,856.608 308.677,858.965 303.175,841.676C297.674,824.387 303.961,801.596 303.961,801.596C303.961,801.596 295.317,803.954 278.027,795.309C260.738,786.665 266.239,791.380 245.020,775.662C223.802,759.945 196.296,744.227 194.724,732.439C193.152,720.651 185.294,709.649 198.653,697.860C212.013,686.072 228.517,660.138 228.517,660.138C228.517,660.138 210.442,620.058 198.653,617.701C186.865,615.343 171.148,608.270 161.717,609.056C152.287,609.842 142.070,599.625 138.927,583.122C135.783,566.619 140.498,550.901 122.423,542.256C104.348,533.612 105.920,521.038 94.917,507.678C83.915,494.318 74.485,493.532 66.626,477.028C58.767,460.525 53.266,455.810 54.838,433.805C56.409,411.800 54.052,401.584 51.694,389.796C49.337,378.008 44.621,373.292 54.052,363.862C63.482,354.431 52.480,348.930 72.913,337.928C93.346,326.926 98.061,336.356 101.990,311.994C105.920,287.632 111.421,287.632 106.706,267.199C101.990,246.766 90.988,238.907 90.988,226.333C90.988,213.759 94.132,209.830 109.063,204.328C123.995,198.827 117.708,208.258 144.428,196.470C171.148,184.682 172.719,179.966 178.221,167.392C183.722,154.818 206.512,133.599 204.941,119.454C203.369,105.308 198.653,106.094 186.865,92.734C175.077,79.374 168.790,75.444 169.576,66.014C170.362,56.583 168.790,61.299 151.501,49.510C134.211,37.722 135.783,25.934 135.783,25.934L504.360,29.078C504.360,29.078 493.358,62.084 502.789,72.301C512.219,82.517 507.504,86.447 513.005,102.950C518.506,119.454 520.864,136.743 526.365,144.602C531.866,152.460 538.153,160.319 538.153,160.319Z";
+
+      // Multi-canvas setup for performance
+      const canvas = document.getElementById('bg-canvas');
+      const ctx = canvas.getContext('2d');
+      // Shared context for collision (using the same path/transform logic)
+      
+      const bloodCanvas = document.getElementById('blood-canvas');
+      const bCtx = bloodCanvas.getContext('2d');
+
+      const svgWidth = 637;
+      const svgHeight = 1024;
+      let scale, offsetX, offsetY;
+
+      function resizeCanvas() {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          canvas.width = bloodCanvas.width = w;
+          canvas.height = bloodCanvas.height = h;
+          // No direct draw; animation loop handles it
+      }
+
+      // ---- Perlin Noise Helper Class ----
+      class Noise {
+          constructor() {
+              this.p = new Uint8Array(512);
+              this.permutation = new Uint8Array(256);
+              for (let i = 0; i < 256; i++) this.permutation[i] = i;
+              for (let i = 255; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [this.permutation[i], this.permutation[j]] = [this.permutation[j], this.permutation[i]];
+              }
+              for (let i = 0; i < 512; i++) this.p[i] = this.permutation[i & 255];
+          }
+
+          fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+          lerp(t, a, b) { return a + t * (b - a); }
+          grad(hash, x, y, z) {
+              const h = hash & 15;
+              const u = h < 8 ? x : y;
+              const v = h < 4 ? y : h === 12 || h === 14 ? x : z;
+              return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+          }
+
+          perlin(x, y, z = 0) {
+              const X = Math.floor(x) & 255;
+              const Y = Math.floor(y) & 255;
+              const Z = Math.floor(z) & 255;
+              x -= Math.floor(x);
+              y -= Math.floor(y);
+              z -= Math.floor(z);
+              const u = this.fade(x);
+              const v = this.fade(y);
+              const w = this.fade(z);
+              const A = this.p[X] + Y, AA = this.p[A] + Z, AB = this.p[A + 1] + Z;
+              const B = this.p[X + 1] + Y, BA = this.p[B] + Z, BB = this.p[B + 1] + Z;
+
+              return this.lerp(w, this.lerp(v, this.lerp(u, this.grad(this.p[AA], x, y, z),
+                  this.grad(this.p[BA], x - 1, y, z)),
+                  this.lerp(u, this.grad(this.p[AB], x, y - 1, z),
+                      this.grad(this.p[BB], x - 1, y - 1, z))),
+                  this.lerp(v, this.lerp(u, this.grad(this.p[AA + 1], x, y, z - 1),
+                      this.grad(this.p[BA + 1], x - 1, y, z - 1)),
+                      this.lerp(u, this.grad(this.p[AB + 1], x, y - 1, z - 1),
+                          this.grad(this.p[BB + 1], x - 1, y - 1, z - 1))));
+          }
+      }
+
+      let noise = new Noise();
+      
+      // Animation state
+      let animationId;
+
+      function drawAnimatedBackground(time) {
+          // 1. Background Gradient (Dark/Radial with Pulse)
+          const w = canvas.width;
+          const h = canvas.height;
+          
+          // Subtle pulse for breathing (Very Slow)
+          const pulse = Math.sin(time * 0.0001) * 0.1 + 0.9; // 0.8 to 1.0
+          
+          const bgGrad = ctx.createRadialGradient(w/2, h/2, 0, w/2, h/2, Math.max(w,h));
+          bgGrad.addColorStop(0, `rgba(32, 25, 30, ${pulse})`); // Subtle red-tint pulse
+          bgGrad.addColorStop(1, '#0b0d10');
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          if (w === 0 || h === 0) return;
+
+          // 2. Procedural Topo Generation (Animated Marching Squares)
+          ctx.save();
+          // High Density: Resolution 9 (was 14) -> ~50% more density
+          const resolution = 9; 
+          const cols = Math.ceil(w / resolution) + 1;
+          const rows = Math.ceil(h / resolution) + 1;
+          
+          // Noise scale for features
+          const nScale = 0.004; 
+          // Animate Z for "Breathing" / Morphing (Very Slow)
+          const zTime = time * 0.00002; 
+
+          // Pre-calculate field
+          const field = new Float32Array(cols * rows);
+          for (let i = 0; i < cols; i++) {
+              for (let j = 0; j < rows; j++) {
+                  // 3D Noise (x, y, time) for animation
+                  let val = noise.perlin(i * resolution * nScale, j * resolution * nScale, zTime) * 1.0;
+                  // Octave 2
+                  val += noise.perlin(i * resolution * nScale * 2, j * resolution * nScale * 2, zTime) * 0.5;
+                  field[i * rows + j] = (val + 1) / 2; 
+              }
+          }
+
+          // Draw levels
+          const levels = 16; // More levels for density
+          
+          // Helper to draw line segment
+          const line = (x1,y1,x2,y2) => {
+               ctx.moveTo(x1, y1);
+               ctx.lineTo(x2, y2);
+          };
+
+          // Dither effect via line opacity pulse (Very Slow)
+          const ditherPulse = Math.sin(time * 0.0005) * 0.05 + 0.15;
+
+          for (let l = 1; l < levels; l++) {
+              const threshold = l / levels;
+              
+              ctx.beginPath();
+              
+              // Styling
+              if (l % 4 === 0) { // Major contour
+                  ctx.strokeStyle = `rgba(255, 255, 255, ${ditherPulse + 0.1})`;
+                  ctx.setLineDash([]);
+                  ctx.lineWidth = 1.0;
+              } else if (l % 2 === 0) { // Intermediate contour
+                  ctx.strokeStyle = `rgba(255, 255, 255, ${ditherPulse * 0.5})`;
+                  ctx.setLineDash([]);
+                  ctx.lineWidth = 0.7;
+              } else { // Minor contour
+                  ctx.strokeStyle = `rgba(255, 255, 255, ${ditherPulse * 0.2})`;
+                  ctx.setLineDash([2, 2]); // Tighter dash
+                  ctx.lineWidth = 0.5;
+              }
+
+              for (let i = 0; i < cols - 1; i++) {
+                  for (let j = 0; j < rows - 1; j++) {
+                      const x = i * resolution;
+                      const y = j * resolution;
+                      
+                      const v0 = field[i * rows + j];
+                      const v1 = field[(i+1) * rows + j];
+                      const v2 = field[(i+1) * rows + (j+1)];
+                      const v3 = field[i * rows + (j+1)];
+
+                      let config = 0;
+                      if (v0 >= threshold) config += 8;
+                      if (v1 >= threshold) config += 4;
+                      if (v2 >= threshold) config += 2;
+                      if (v3 >= threshold) config += 1;
+
+                      if (config > 0 && config < 15) {
+                          const hRes = resolution / 2;
+                          // Standard marching squares cases
+                          switch(config) {
+                              case 1: case 14: line(x, y+hRes, x+hRes, y+resolution); break;
+                              case 2: case 13: line(x+hRes, y+resolution, x+resolution, y+hRes); break;
+                              case 3: case 12: line(x, y+hRes, x+resolution, y+hRes); break;
+                              case 4: case 11: line(x+resolution, y+hRes, x+hRes, y); break;
+                              case 5: line(x, y+hRes, x+hRes, y); line(x+hRes, y+resolution, x+resolution, y+hRes); break;
+                              case 6: line(x+hRes, y, x+hRes, y+resolution); break;
+                              case 7: case 8: line(x+hRes, y, x, y+hRes); break;
+                              case 9: line(x, y+hRes, x+hRes, y+resolution); line(x+hRes, y, x+resolution, y+hRes); break;
+                              case 10: line(x, y+hRes, x+hRes, y+resolution); line(x+resolution, y+hRes, x+hRes, y); break; // Ambiguous, simplifying
+                          }
+                      }
+                  }
+              }
+              ctx.stroke();
+          }
+          ctx.restore();
+
+
+          // --- 3. Map Drawing (Illinois) ---
+          
+          // Map scale: 1.07 for better fit (+2%)
+          scale = (canvas.height * 1.07) / svgHeight; 
+          
+          // Absolute Center again
+          const centerX = canvas.width * 0.5; 
+          offsetX = centerX - (svgWidth * scale / 2) - (canvas.width * 0.01);
+          // 1vh from top to shift higher
+          offsetY = canvas.height * 0.01;
+
+          ctx.save();
+          ctx.translate(offsetX, offsetY);
+          ctx.scale(scale, scale);
+          
+          const path = new Path2D(illinoisPath);
+          
+          // Drop Shadow (Deep)
+          ctx.shadowColor = 'rgba(0,0,0,0.9)';
+          ctx.shadowBlur = 60;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 20;
+          
+          // Base Fill (Dark Slate)
+          // A nice neutral dark blue-grey that contrasts with red blood
+          ctx.fillStyle = '#1e252b'; 
+          ctx.fill(path);
+          
+          // Clear shadow
+          ctx.shadowColor = 'transparent';
+          ctx.shadowBlur = 0;
+          ctx.shadowOffsetX = 0;
+          ctx.shadowOffsetY = 0;
+
+          // Simple Slate Texture (Subtle Grain)
+          ctx.save();
+          ctx.clip(path);
+          
+          // Generate simple slate noise
+          if (!window.slatePattern) {
+              const pCanvas = document.createElement('canvas');
+              const pSize = 512;
+              pCanvas.width = pSize;
+              pCanvas.height = pSize;
+              const pCtx = pCanvas.getContext('2d');
+              
+              const mData = pCtx.createImageData(pSize, pSize);
+              const data = mData.data;
+              
+              for(let i=0; i<data.length; i+=4) {
+                   const grain = (Math.random() - 0.5) * 15;
+                   // Base color #232a32
+                   const r = 35 + grain;
+                   const g = 42 + grain;
+                   const b = 50 + grain;
+
+                   data[i]   = r;
+                   data[i+1] = g;
+                   data[i+2] = b; 
+                   data[i+3] = 255;
+              }
+              pCtx.putImageData(mData, 0, 0);
+              window.slatePattern = ctx.createPattern(pCanvas, 'repeat');
+          }
+           
+          ctx.fillStyle = window.slatePattern;
+          ctx.fill(path); 
+          
+          // Lighting: Subtle Top-Down Gradient for Volume
+          ctx.globalCompositeOperation = 'multiply';
+          const gradient = ctx.createLinearGradient(0, 0, 0, svgHeight);
+          gradient.addColorStop(0, '#ccc');   // Highlight top
+          gradient.addColorStop(1, '#111');   // Shadow bottom
+          ctx.fillStyle = gradient;
+          ctx.fill(path);
+          
+          ctx.restore();
+
+          // Thin but Distinct Border
+          ctx.strokeStyle = 'rgba(100, 110, 120, 0.5)'; // Steel grey border
+          ctx.lineWidth = 3.5;
+          ctx.lineCap = 'round';
+          ctx.stroke(path);
+          
+          // Inner Bevel Highlight
+          ctx.save();
+          ctx.clip(path);
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+          ctx.lineWidth = 6;
+          ctx.stroke(path);
+          ctx.restore();
+          
+          ctx.restore();
+      }
+
+
+      // Physics Constants
+      const FLOW_RATE = 0.01; // Reduced by ~70%
+      const VISCOSITY = 0.88; // 40% on the slider scale (thick/draggy)
+      const GRAVITY_VAL = 0.38;
+
+      let drips = [];
+      
+      class Drip {
+          constructor(x, y) {
+              this.x = x; // Screen coordinates
+              this.y = y;
+              this.path = [{x: x, y: y}]; 
+              this.baseHeadSize = 0.8 + Math.random() * 0.6; // Smaller start
+              this.headSize = this.baseHeadSize;
+              this.vy = 0.1 + Math.random() * 0.2; 
+              this.vx = (Math.random() - 0.5) * 0.2; // Initial random momentum
+              
+              // Personality traits
+              this.wanderForce = 0.02 + Math.random() * 0.08;
+              this.inertia = 0.94 + Math.random() * 0.04;
+              
+              this.isDead = false;
+              this.state = 'sliding'; // sliding | lingering | falling
+              this.lingerProgress = 0;
+              this.lingerDuration = 60 + Math.random() * 80; 
+              
+              this.baseTrailLength = 140 + Math.random() * 160; 
+              this.currentTrailLength = this.baseTrailLength;
+              this.trailWidthMult = 1.0;
+              this.color = this.getBloodColor();
+              
+              // Latch point for vibration
+              this.lockedX = x;
+          }
+
+          getBloodColor() {
+              // Deep red/maroon
+              const r = 110 + Math.random() * 20;
+              return `rgb(${r}, 0, 5)`;
+          }
+
+          update() {
+              if (this.isDead) return;
+
+              if (this.state === 'sliding') {
+                  // 1. Apply Forces
+                  this.vx += (Math.random() - 0.5) * this.wanderForce;
+                  this.vx *= this.inertia; 
+                  
+                  this.vy *= (VISCOSITY * 0.96);
+                  this.vy += GRAVITY_VAL * 0.05;
+                  
+                  const nextX = this.x + this.vx;
+                  const nextY = this.y + this.vy;
+
+                  // 2. Map Collision Check
+                  // Convert next position to SVG space to check against path
+                  const svgX = (nextX - offsetX) / scale;
+                  const svgY = (nextY - offsetY) / scale;
+                  
+                  // Check if inside Illinois
+                  const isInside = ctx.isPointInPath(illinoisPath2D, svgX, svgY);
+                  
+                  if (isInside) {
+                      // Move normally
+                      this.x = nextX;
+                      this.y = nextY;
+                  } else {
+                      // Collision handling
+                      
+                      // Check Horizontal Bounce (try keeping Y same, flip X)
+                      const bounceSvgX = ((this.x - this.vx) - offsetX) / scale;
+                      if (ctx.isPointInPath(illinoisPath2D, bounceSvgX, svgY)) {
+                          this.x -= this.vx;
+                          this.vx *= -0.5;
+                          this.y = nextY;
+                      } 
+                      // Check Vertical Floor (try keeping X same, stop Y)
+                      else if (ctx.isPointInPath(illinoisPath2D, svgX, (this.y - offsetY)/scale)) {
+                          // We hit a bottom edge!
+                          this.state = 'lingering';
+                          this.vy = 0;
+                          this.vx = 0; 
+                          this.lockedX = this.x;
+                      }
+                      else {
+                          // Corner case or fell out somehow?
+                          // Just transition to falling if we are near bottom, or kill if stuck?
+                          // Let's assume we hit an edge and should linger/drip
+                          this.state = 'lingering';
+                          this.lockedX = this.x;
+                      }
+                  }
+
+              } 
+              else if (this.state === 'lingering') {
+                  this.lingerProgress++;
+                  const progressRatio = this.lingerProgress / this.lingerDuration;
+                  
+                  // Head grows slightly less (Target ~1.8 max)
+                  this.headSize = this.baseHeadSize + (progressRatio * 1.0);
+                  
+                  // Tail thins 
+                  this.trailWidthMult = 1.0 - (progressRatio * 0.65);
+                  
+                  // Trail shrinks
+                  const shrinkFactor = 0.7 + (Math.random() * 0.2); 
+                  this.currentTrailLength = this.baseTrailLength * (1 - (progressRatio * shrinkFactor));
+                  
+                  // Vibration
+                  this.x = this.lockedX + Math.sin(this.lingerProgress * 0.6) * 0.15;
+
+                  if (this.lingerProgress >= this.lingerDuration) {
+                      this.state = 'falling';
+                      this.vy = 4.0; // Snap
+                  }
+              } 
+              else if (this.state === 'falling') {
+                  // Free fall
+                  this.vy += GRAVITY_VAL * 0.5;
+                  this.y += this.vy;
+              }
+
+              // Update History
+              this.path.push({x: this.x, y: this.y});
+
+              // Prune trail
+              while (this.path.length > 2 && (this.y - this.path[0].y > this.currentTrailLength)) {
+                  this.path.shift();
+              }
+
+              if (this.path[0].y > window.innerHeight + 200) {
+                  this.isDead = true;
+              }
+          }
+
+          draw(ctx) {
+              if (this.path.length < 2) return;
+
+              const baseWidth = this.baseHeadSize * 2 * this.trailWidthMult;
+
+              // 1. Draw Main Trail
+              ctx.beginPath();
+              ctx.strokeStyle = this.color;
+              ctx.lineWidth = baseWidth; 
+              ctx.lineCap = 'round';
+              ctx.lineJoin = 'round';
+              
+              ctx.moveTo(this.path[0].x, this.path[0].y);
+              for (let i = 1; i < this.path.length - 1; i++) {
+                  ctx.lineTo(this.path[i].x, this.path[i].y);
+              }
+              ctx.stroke();
+
+              // 2. Head Connection
+              const penult = this.path[this.path.length - 2];
+              const headPos = this.path[this.path.length - 1];
+              
+              ctx.beginPath();
+              ctx.fillStyle = this.color;
+              
+              const dx = headPos.x - penult.x;
+              const dy = headPos.y - penult.y;
+              const angle = Math.atan2(dy, dx);
+              
+              const tx1 = penult.x + Math.cos(angle + Math.PI/2) * (baseWidth/2);
+              const ty1 = penult.y + Math.sin(angle + Math.PI/2) * (baseWidth/2);
+              const tx2 = penult.x + Math.cos(angle - Math.PI/2) * (baseWidth/2);
+              const ty2 = penult.y + Math.sin(angle - Math.PI/2) * (baseWidth/2);
+              
+              const joinWidth = Math.max(baseWidth, this.headSize * 1.45);
+              
+              const hx1 = headPos.x + Math.cos(angle + Math.PI/2) * (joinWidth/2);
+              const hy1 = headPos.y + Math.sin(angle + Math.PI/2) * (joinWidth/2);
+              const hx2 = headPos.x + Math.cos(angle - Math.PI/2) * (joinWidth/2);
+              const hy2 = headPos.y + Math.sin(angle - Math.PI/2) * (joinWidth/2);
+
+              ctx.moveTo(tx1, ty1);
+              ctx.lineTo(hx1, hy1);
+              ctx.lineTo(hx2, hy2);
+              ctx.lineTo(tx2, ty2);
+              ctx.closePath();
+              ctx.fill();
+
+              // 3. Draw Head
+              ctx.save();
+              ctx.shadowColor = 'rgba(0,0,0,0.4)'; // Darker shadow for dark background
+              ctx.shadowBlur = 6;
+              ctx.shadowOffsetY = 3;
+              ctx.fillStyle = this.color;
+              ctx.beginPath();
+              
+              let stretch = 0;
+              if (this.state === 'falling') {
+                  stretch = Math.min(this.vy * 2.5, this.headSize * 3.0);
+              } else if (this.state === 'lingering') {
+                  stretch = (this.lingerProgress / this.lingerDuration) * this.headSize * 0.9;
+              }
+              ctx.ellipse(headPos.x, headPos.y, this.headSize, this.headSize + stretch, 0, 0, Math.PI * 2);
+              ctx.fill();
+              ctx.restore();
+
+              // Specular
+              ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+              ctx.beginPath();
+              const highlightY = headPos.y - (this.headSize * 0.2) + (stretch * 0.1);
+              ctx.arc(headPos.x - this.headSize * 0.35, highlightY, this.headSize * 0.3, 0, Math.PI * 2);
+              ctx.fill();
+          }
+      }
+
+      // Pre-calculate path for hit testing
+      const illinoisPath2D = new Path2D(illinoisPath);
+
+      function animate() {
+          const time = performance.now();
+          drawAnimatedBackground(time);
+          bCtx.clearRect(0, 0, bloodCanvas.width, bloodCanvas.height);
+          
+          // Spawn Logic
+          // Try to find a valid point inside the map
+          if (Math.random() < FLOW_RATE) {
+              // 10 attempts to find a spot
+              for(let i=0; i<10; i++) {
+                  // Random point in SVG space
+                  const sx = Math.random() * svgWidth;
+                  const sy = Math.random() * svgHeight;
+                  
+                  if (ctx.isPointInPath(illinoisPath2D, sx, sy)) {
+                      // Convert to screen space
+                      const x = sx * scale + offsetX;
+                      const y = sy * scale + offsetY;
+                      drips.push(new Drip(x, y));
+                      break; // Spawned one, stop
+                  }
+              }
+          }
+
+          for (let i = drips.length - 1; i >= 0; i--) {
+              drips[i].update();
+              drips[i].draw(bCtx);
+              if (drips[i].isDead) {
+                  drips.splice(i, 1);
+              }
+          }
+          requestAnimationFrame(animate);
+      }
+
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
+      animate();
+
+      // Form Handling
+      const form = document.getElementById("registrationForm");
+      const thankYou = document.getElementById("thankYou");
+      const submitBtn = document.getElementById("submitBtn");
+      const formContainer = document.getElementById("formContainer");
+
+      // Mutually exclusive role checkboxes
+      const roleSelectors = document.querySelectorAll('.role-selector');
+      roleSelectors.forEach(selector => {
+        selector.addEventListener('change', function() {
+          if (this.checked) {
+            roleSelectors.forEach(s => {
+              if (s !== this) s.checked = false;
+            });
+          }
+        });
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Check if API URL is configured
+        if (!CONFIG.API_URL || CONFIG.API_URL.includes("YOUR_")) {
+          alert("Submission endpoint not configured. Please set the API URL in env.js (local) or config.js (production).");
+          return;
+        }
+
+        const formData = new FormData(form);
+        const roles = Array.from(roleSelectors)
+          .filter(s => s.checked)
+          .map(s => s.value);
+
+        const data = {
+          name: formData.get("name"),
+          phone: formData.get("phone"),
+          email: formData.get("email"),
+          church: formData.get("church") || "None",
+          role: roles.join(', ') || "Individual",
+          timestamp: new Date().toLocaleString(),
+        };
+
+        submitBtn.disabled = true;
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = "<span>Signing the Registry...</span>";
+
+        try {
+          // Detect if we are sending to a Google Form (requires URLSearchParams) 
+          // or a standard API (requires JSON)
+          const isGoogleForm = CONFIG.API_URL.includes("docs.google.com/forms");
+          
+          let fetchOptions = {
+            method: "POST",
+            mode: "no-cors", // Required for many no-backend form services
+          };
+
+          if (isGoogleForm) {
+            // Google Form Hack Logic
+            // Note: You must map these entry.IDs to your specific Google Form fields
+            const params = new URLSearchParams();
+            params.append('entry.2005620554', data.name);   // Example IDs - USER MUST UPDATE
+            params.append('entry.1166974658', data.phone);
+            params.append('entry.1045781291', data.email);
+            params.append('entry.839337160', data.church);
+            params.append('entry.227649005', data.role);
+            
+            fetchOptions.body = params;
+            fetchOptions.headers = {
+              "Content-Type": "application/x-www-form-urlencoded",
+            };
+          } else {
+            // Standard JSON API (SheetDB, SheetMonkey, etc.)
+            fetchOptions.body = JSON.stringify(data);
+            fetchOptions.headers = {
+              "Content-Type": "application/json",
+            };
+            if (CONFIG.API_KEY) {
+                fetchOptions.headers["X-Api-Key"] = CONFIG.API_KEY;
+            }
+            // Some APIs don't like no-cors if they expect custom headers
+            if (CONFIG.API_KEY) fetchOptions.mode = "cors";
+          }
+
+          await fetch(CONFIG.API_URL, fetchOptions);
+
+          // Success UI
+          formContainer.classList.add("hidden");
+          thankYou.classList.add("active");
+
+          // Reset form state
+          form.reset();
+          roleSelectors.forEach(s => s.checked = false);
+
+        } catch (error) {
+          console.error("Submission Error:", error);
+          alert("We encountered an issue submitting your registration. Please check your connection and try again.");
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnText;
+        }
+      });
+
+    </script>
+  </body>
+</html>
