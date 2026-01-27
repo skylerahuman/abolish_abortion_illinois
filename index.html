@@ -1004,7 +1004,7 @@
           phone: formData.get("phone"),
           email: formData.get("email"),
           church: formData.get("church") || "None",
-          role: roles.join(', ') || "Individual",
+          role: roles.length > 0 ? roles[0] : "Neither", // Maps to Pastor, Deacon, or Neither
           timestamp: new Date().toLocaleString(),
         };
 
@@ -1023,14 +1023,13 @@
           };
 
           if (isGoogleForm) {
-            // Google Form Hack Logic
-            // Note: You must map these entry.IDs to your specific Google Form fields
+            // Google Form Mapping for: Abolition Illinois
             const params = new URLSearchParams();
-            params.append('entry.2005620554', data.name);   // Example IDs - USER MUST UPDATE
-            params.append('entry.1166974658', data.phone);
-            params.append('entry.1045781291', data.email);
-            params.append('entry.839337160', data.church);
-            params.append('entry.227649005', data.role);
+            params.append('entry.1311108255', data.name);   
+            params.append('entry.1188253231', data.phone);
+            params.append('entry.1043131911', data.email);
+            params.append('entry.854190124', data.church);
+            params.append('entry.344386325', data.role);
             
             fetchOptions.body = params;
             fetchOptions.headers = {
@@ -1054,6 +1053,11 @@
           // Success UI
           formContainer.classList.add("hidden");
           thankYou.classList.add("active");
+
+          // Page refresh after 10 seconds
+          setTimeout(() => {
+            window.location.reload();
+          }, 10000);
 
           // Reset form state
           form.reset();
