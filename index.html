@@ -317,15 +317,7 @@
         z-index: -2;
       }
 
-      #blood-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-      }
+
     </style>
   </head>
 
@@ -336,7 +328,7 @@
 
 
     <canvas id="bg-canvas"></canvas>
-    <canvas id="blood-canvas"></canvas>
+
 
     <div class="container">
       <div class="form-container" id="formContainer">
@@ -443,8 +435,7 @@
       const ctx = canvas.getContext('2d');
       // Shared context for collision (using the same path/transform logic)
       
-      const bloodCanvas = document.getElementById('blood-canvas');
-      const bCtx = bloodCanvas.getContext('2d');
+
 
       const svgWidth = 637;
       const svgHeight = 1024;
@@ -453,8 +444,8 @@
       function resizeCanvas() {
           const w = window.innerWidth;
           const h = window.innerHeight;
-          canvas.width = bloodCanvas.width = w;
-          canvas.height = bloodCanvas.height = h;
+          canvas.width = w;
+          canvas.height = h;
           // No direct draw; animation loop handles it
       }
 
@@ -715,251 +706,11 @@
       }
 
 
-      // Physics Constants
-      const FLOW_RATE = 0.01; // Reduced by ~70%
-      const VISCOSITY = 0.88; // 40% on the slider scale (thick/draggy)
-      const GRAVITY_VAL = 0.38;
 
-      let drips = [];
-      
-      class Drip {
-          constructor(x, y) {
-              this.x = x; // Screen coordinates
-              this.y = y;
-              this.path = [{x: x, y: y}]; 
-              this.baseHeadSize = 0.8 + Math.random() * 0.6; // Smaller start
-              this.headSize = this.baseHeadSize;
-              this.vy = 0.1 + Math.random() * 0.2; 
-              this.vx = (Math.random() - 0.5) * 0.2; // Initial random momentum
-              
-              // Personality traits
-              this.wanderForce = 0.02 + Math.random() * 0.08;
-              this.inertia = 0.94 + Math.random() * 0.04;
-              
-              this.isDead = false;
-              this.state = 'sliding'; // sliding | lingering | falling
-              this.lingerProgress = 0;
-              this.lingerDuration = 60 + Math.random() * 80; 
-              
-              this.baseTrailLength = 140 + Math.random() * 160; 
-              this.currentTrailLength = this.baseTrailLength;
-              this.trailWidthMult = 1.0;
-              this.color = this.getBloodColor();
-              
-              // Latch point for vibration
-              this.lockedX = x;
-          }
-
-          getBloodColor() {
-              // Deep red/maroon
-              const r = 110 + Math.random() * 20;
-              return `rgb(${r}, 0, 5)`;
-          }
-
-          update() {
-              if (this.isDead) return;
-
-              if (this.state === 'sliding') {
-                  // 1. Apply Forces
-                  this.vx += (Math.random() - 0.5) * this.wanderForce;
-                  this.vx *= this.inertia; 
-                  
-                  this.vy *= (VISCOSITY * 0.96);
-                  this.vy += GRAVITY_VAL * 0.05;
-                  
-                  const nextX = this.x + this.vx;
-                  const nextY = this.y + this.vy;
-
-                  // 2. Map Collision Check
-                  // Convert next position to SVG space to check against path
-                  const svgX = (nextX - offsetX) / scale;
-                  const svgY = (nextY - offsetY) / scale;
-                  
-                  // Check if inside Illinois
-                  const isInside = ctx.isPointInPath(illinoisPath2D, svgX, svgY);
-                  
-                  if (isInside) {
-                      // Move normally
-                      this.x = nextX;
-                      this.y = nextY;
-                  } else {
-                      // Collision handling
-                      
-                      // Check Horizontal Bounce (try keeping Y same, flip X)
-                      const bounceSvgX = ((this.x - this.vx) - offsetX) / scale;
-                      if (ctx.isPointInPath(illinoisPath2D, bounceSvgX, svgY)) {
-                          this.x -= this.vx;
-                          this.vx *= -0.5;
-                          this.y = nextY;
-                      } 
-                      // Check Vertical Floor (try keeping X same, stop Y)
-                      else if (ctx.isPointInPath(illinoisPath2D, svgX, (this.y - offsetY)/scale)) {
-                          // We hit a bottom edge!
-                          this.state = 'lingering';
-                          this.vy = 0;
-                          this.vx = 0; 
-                          this.lockedX = this.x;
-                      }
-                      else {
-                          // Corner case or fell out somehow?
-                          // Just transition to falling if we are near bottom, or kill if stuck?
-                          // Let's assume we hit an edge and should linger/drip
-                          this.state = 'lingering';
-                          this.lockedX = this.x;
-                      }
-                  }
-
-              } 
-              else if (this.state === 'lingering') {
-                  this.lingerProgress++;
-                  const progressRatio = this.lingerProgress / this.lingerDuration;
-                  
-                  // Head grows slightly less (Target ~1.8 max)
-                  this.headSize = this.baseHeadSize + (progressRatio * 1.0);
-                  
-                  // Tail thins 
-                  this.trailWidthMult = 1.0 - (progressRatio * 0.65);
-                  
-                  // Trail shrinks
-                  const shrinkFactor = 0.7 + (Math.random() * 0.2); 
-                  this.currentTrailLength = this.baseTrailLength * (1 - (progressRatio * shrinkFactor));
-                  
-                  // Vibration
-                  this.x = this.lockedX + Math.sin(this.lingerProgress * 0.6) * 0.15;
-
-                  if (this.lingerProgress >= this.lingerDuration) {
-                      this.state = 'falling';
-                      this.vy = 4.0; // Snap
-                  }
-              } 
-              else if (this.state === 'falling') {
-                  // Free fall
-                  this.vy += GRAVITY_VAL * 0.5;
-                  this.y += this.vy;
-              }
-
-              // Update History
-              this.path.push({x: this.x, y: this.y});
-
-              // Prune trail
-              while (this.path.length > 2 && (this.y - this.path[0].y > this.currentTrailLength)) {
-                  this.path.shift();
-              }
-
-              if (this.path[0].y > window.innerHeight + 200) {
-                  this.isDead = true;
-              }
-          }
-
-          draw(ctx) {
-              if (this.path.length < 2) return;
-
-              const baseWidth = this.baseHeadSize * 2 * this.trailWidthMult;
-
-              // 1. Draw Main Trail
-              ctx.beginPath();
-              ctx.strokeStyle = this.color;
-              ctx.lineWidth = baseWidth; 
-              ctx.lineCap = 'round';
-              ctx.lineJoin = 'round';
-              
-              ctx.moveTo(this.path[0].x, this.path[0].y);
-              for (let i = 1; i < this.path.length - 1; i++) {
-                  ctx.lineTo(this.path[i].x, this.path[i].y);
-              }
-              ctx.stroke();
-
-              // 2. Head Connection
-              const penult = this.path[this.path.length - 2];
-              const headPos = this.path[this.path.length - 1];
-              
-              ctx.beginPath();
-              ctx.fillStyle = this.color;
-              
-              const dx = headPos.x - penult.x;
-              const dy = headPos.y - penult.y;
-              const angle = Math.atan2(dy, dx);
-              
-              const tx1 = penult.x + Math.cos(angle + Math.PI/2) * (baseWidth/2);
-              const ty1 = penult.y + Math.sin(angle + Math.PI/2) * (baseWidth/2);
-              const tx2 = penult.x + Math.cos(angle - Math.PI/2) * (baseWidth/2);
-              const ty2 = penult.y + Math.sin(angle - Math.PI/2) * (baseWidth/2);
-              
-              const joinWidth = Math.max(baseWidth, this.headSize * 1.45);
-              
-              const hx1 = headPos.x + Math.cos(angle + Math.PI/2) * (joinWidth/2);
-              const hy1 = headPos.y + Math.sin(angle + Math.PI/2) * (joinWidth/2);
-              const hx2 = headPos.x + Math.cos(angle - Math.PI/2) * (joinWidth/2);
-              const hy2 = headPos.y + Math.sin(angle - Math.PI/2) * (joinWidth/2);
-
-              ctx.moveTo(tx1, ty1);
-              ctx.lineTo(hx1, hy1);
-              ctx.lineTo(hx2, hy2);
-              ctx.lineTo(tx2, ty2);
-              ctx.closePath();
-              ctx.fill();
-
-              // 3. Draw Head
-              ctx.save();
-              ctx.shadowColor = 'rgba(0,0,0,0.4)'; // Darker shadow for dark background
-              ctx.shadowBlur = 6;
-              ctx.shadowOffsetY = 3;
-              ctx.fillStyle = this.color;
-              ctx.beginPath();
-              
-              let stretch = 0;
-              if (this.state === 'falling') {
-                  stretch = Math.min(this.vy * 2.5, this.headSize * 3.0);
-              } else if (this.state === 'lingering') {
-                  stretch = (this.lingerProgress / this.lingerDuration) * this.headSize * 0.9;
-              }
-              ctx.ellipse(headPos.x, headPos.y, this.headSize, this.headSize + stretch, 0, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.restore();
-
-              // Specular
-              ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-              ctx.beginPath();
-              const highlightY = headPos.y - (this.headSize * 0.2) + (stretch * 0.1);
-              ctx.arc(headPos.x - this.headSize * 0.35, highlightY, this.headSize * 0.3, 0, Math.PI * 2);
-              ctx.fill();
-          }
-      }
-
-      // Pre-calculate path for hit testing
-      const illinoisPath2D = new Path2D(illinoisPath);
 
       function animate() {
           const time = performance.now();
           drawAnimatedBackground(time);
-          bCtx.clearRect(0, 0, bloodCanvas.width, bloodCanvas.height);
-          
-          // Spawn Logic
-          // Try to find a valid point inside the map
-          if (Math.random() < FLOW_RATE) {
-              // 10 attempts to find a spot
-              for(let i=0; i<10; i++) {
-                  // Random point in SVG space
-                  const sx = Math.random() * svgWidth;
-                  const sy = Math.random() * svgHeight;
-                  
-                  if (ctx.isPointInPath(illinoisPath2D, sx, sy)) {
-                      // Convert to screen space
-                      const x = sx * scale + offsetX;
-                      const y = sy * scale + offsetY;
-                      drips.push(new Drip(x, y));
-                      break; // Spawned one, stop
-                  }
-              }
-          }
-
-          for (let i = drips.length - 1; i >= 0; i--) {
-              drips[i].update();
-              drips[i].draw(bCtx);
-              if (drips[i].isDead) {
-                  drips.splice(i, 1);
-              }
-          }
           requestAnimationFrame(animate);
       }
 
