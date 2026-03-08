@@ -7,7 +7,7 @@ const CONFIG = {
     // Priority: window.ENV (local script) > Fallback
     API_URL: (typeof window.ENV !== 'undefined' && window.ENV.SHEET_API_URL) 
              ? window.ENV.SHEET_API_URL 
-             : "https://docs.google.com/forms/d/e/1FAIpQLScaeZ9NiEFA9xuzVfNa-zXtr2SkTDAAqlaNsGIcQBXrkrWfnA/formResponse",
+             : "https://docs.google.com/forms/d/e/1FAIpQLScaeZ9NiEFA9xuzVfNa-zXtr2SkTDAAqlaNsGIcQBXrkrWfnA/viewform",
              
     API_KEY: (typeof window.ENV !== 'undefined' && window.ENV.API_KEY) 
              ? window.ENV.API_KEY 

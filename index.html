@@ -922,10 +922,9 @@
             params.append('entry.49951350', data.church);
             params.append('entry.952779629', data.role);
             
-            fetchOptions.body = params;
-            fetchOptions.headers = {
-              "Content-Type": "application/x-www-form-urlencoded",
-            };
+            // Redirect to pre-filled Google Form
+            window.location.href = `${CONFIG.API_URL}?usp=pp_url&${params.toString()}`;
+            return; // Stop execution, browser will navigate away
           } else {
             // Standard JSON API (SheetDB, SheetMonkey, etc.)
             fetchOptions.body = JSON.stringify(data);
