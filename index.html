@@ -748,6 +748,10 @@
               const wScale = (canvas.width * 0.9) / svgWidth;
               scale = Math.min(hScale, wScale);
 
+              if (window.innerWidth > 768) {
+                  scale *= 1.15;
+              }
+
               // Absolute Center again
               const centerX = canvas.width * 0.5;
               offsetX = centerX - (svgWidth * scale / 2) - (canvas.width * 0.01);
@@ -770,7 +774,7 @@
 
               // Base Fill (Dark Slate)
               // A nice neutral dark blue-grey that contrasts with red blood
-              ctx.fillStyle = '#1e252b';
+              ctx.fillStyle = '#4B4B4B';
               ctx.fill(path);
 
               // Clear shadow
@@ -824,7 +828,7 @@
               ctx.restore();
 
               // Thin but Distinct Border
-              ctx.strokeStyle = 'rgba(100, 110, 120, 0.5)'; // Steel grey border
+              ctx.strokeStyle = '#FF8200'; // Vols orange border
               ctx.lineWidth = 3.5;
               ctx.lineCap = 'round';
               ctx.stroke(path);
