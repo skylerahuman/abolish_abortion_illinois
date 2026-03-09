@@ -415,6 +415,29 @@
         }
       }
 
+      .mobile-map-container {
+        display: none; /* Hidden by default on desktop */
+      }
+
+      @media (max-width: 500px) {
+        .mobile-map-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          position: fixed;
+          bottom: 10vh; /* Positioned above the privacy footer */
+          z-index: 5;
+          pointer-events: none;
+        }
+
+        .mobile-map-svg {
+          width: 85vw; /* 85% of viewport width as requested */
+          height: auto;
+          filter: drop-shadow(0 20px 60px rgba(0,0,0,0.9));
+        }
+      }
+
       @keyframes fadeIn {
         from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
@@ -544,6 +567,10 @@
           deeply appreciated.
         </p>
       </div>
+    </div>
+
+    <div class="mobile-map-container">
+      <img src="tennessee.svg" alt="Tennessee Outline" class="mobile-map-svg" />
     </div>
 
     <div class="privacy-footer">
